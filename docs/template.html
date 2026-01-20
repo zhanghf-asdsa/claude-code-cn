@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{{PAGE_TITLE}} - Claude Code 中文文档</title>
+  <link rel="stylesheet" href="../assets/css/style.css">
+  <link rel="stylesheet" href="../lib/prism.css">
+</head>
+<body>
+  <aside class="sidebar">
+    <div class="brand">
+      <a href="../index.html" style="text-decoration: none; color: inherit;">Claude Code 中文文档</a>
+    </div>
+    <input class="search-input" type="text" placeholder="搜索文档..." id="searchInput">
+    <nav class="doc-nav">
+      {{NAVIGATION}}
+    </nav>
+  </aside>
+
+  <main class="content">
+    <article class="doc-article">
+      <div class="breadcrumbs">{{BREADCRUMBS}}</div>
+      {{CONTENT}}
+
+      <div class="doc-nav-footer">
+        <a class="prev-link" href="{{PREV_PAGE}}">← {{PREV_TITLE}}</a>
+        <a class="next-link" href="{{NEXT_PAGE}}">{{NEXT_TITLE}} →</a>
+      </div>
+    </article>
+  </main>
+
+  <div class="search-results" id="searchResults"></div>
+
+  <script src="../assets/js/search.js"></script>
+  <script src="../lib/prism.js"></script>
+</body>
+</html>
