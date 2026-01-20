@@ -4,7 +4,19 @@
       "title": "首页",
       "url": "index.html",
       "keywords": ["claude code", "首页", "入门", "介绍"],
-      "summary": "Claude Code 中文文档首页"
+      "summary": "Claude Code 中文文档首页，快速了解和开始使用"
+    },
+    {
+      "title": "安装",
+      "url": "docs/getting-started/installation.html",
+      "keywords": ["安装", "setup", "install", "npm", "yarn", "pnpm"],
+      "summary": "Claude Code 安装指南，支持 npm、yarn、pnpm"
+    },
+    {
+      "title": "第一步",
+      "url": "docs/getting-started/first-steps.html",
+      "keywords": ["入门", "开始", "命令", "help", "clear", "第一次"],
+      "summary": "Claude Code 第一次使用指南，常用命令介绍"
     }
   ]
 }
