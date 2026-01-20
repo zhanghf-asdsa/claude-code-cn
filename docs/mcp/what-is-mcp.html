@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>什么是 MCP - Claude Code 中文文档</title>
+  <link rel="stylesheet" href="../../assets/css/style.css">
+  <link rel="stylesheet" href="../../lib/prism.css">
+</head>
+<body>
+  <aside class="sidebar">
+    <div class="brand">
+      <a href="../../index.html" style="text-decoration: none; color: inherit;">Claude Code 中文文档</a>
+    </div>
+    <input class="search-input" type="text" placeholder="搜索文档..." id="searchInput">
+    <nav class="doc-nav">
+      <details class="nav-section">
+        <summary>快速开始</summary>
+        <ul>
+          <li><a href="../getting-started/installation.html">安装</a></li>
+          <li><a href="../getting-started/first-steps.html">第一步</a></li>
+        </ul>
+      </details>
+      <details class="nav-section">
+        <summary>概念</summary>
+        <ul>
+          <li><a href="../concepts/overview.html">概述</a></li>
+          <li><a href="../concepts/session-management.html">会话管理</a></li>
+        </ul>
+      </details>
+      <details class="nav-section">
+        <summary>命令</summary>
+        <ul>
+          <li><a href="../commands/built-in.html">内置命令</a></li>
+          <li><a href="../commands/slash-commands.html">斜杠命令</a></li>
+        </ul>
+      </details>
+      <details class="nav-section">
+        <summary>技能</summary>
+        <ul>
+          <li><a href="../skills/creating-skills.html">创建技能</a></li>
+          <li><a href="../skills/skill-reference.html">技能参考</a></li>
+        </ul>
+      </details>
+      <details class="nav-section" open>
+        <summary>MCP</summary>
+        <ul>
+          <li><a href="what-is-mcp.html" style="color: var(--color-link);">什么是 MCP</a></li>
+          <li><a href="using-mcp.html">使用 MCP</a></li>
+        </ul>
+      </details>
+    </nav>
+  </aside>
+
+  <main class="content">
+    <article class="doc-article">
+      <div class="breadcrumbs">首页 > MCP</div>
+
+      <h1>什么是 MCP</h1>
+
+      <p>MCP (Model Context Protocol) 是一个开放协议，允许 Claude 连接到外部数据源和工具，大大扩展其能力。</p>
+
+      <h2>为什么需要 MCP？</h2>
+
+      <p>虽然 Claude 很强大，但它默认只能访问您当前项目的文件。MCP 使 Claude 能够：</p>
+
+      <ul>
+        <li><strong>访问数据库</strong> - 查询和分析数据</li>
+        <li><strong>调用 API</strong> - 与外部服务集成</li>
+        <li><strong>读取云存储</strong> - 访问 S3、GCS 等存储</li>
+        <li><strong>执行远程命令</strong> - 在服务器上运行命令</li>
+        <li><strong>自定义工具</strong> - 添加任何您需要的功能</li>
+      </ul>
+
+      <h2>MCP 架构</h2>
+
+      <pre><code>┌─────────────┐      ┌─────────────┐      ┌─────────────┐
+│  Claude     │ ────▶ │  MCP Server │ ────▶ │  外部服务   │
+│  Code       │      │             │      │  (API/DB)   │
+└─────────────┘      └─────────────┘      └─────────────┘
+                             │
+                             ▼
+                      ┌─────────────┐
+                      │  工具/资源   │
+                      │  (Tools)    │
+                      └─────────────┘</code></pre>
+
+      <h2>核心概念</h2>
+
+      <h3>1. MCP 服务器</h3>
+      <p>MCP 服务器是一个独立的进程，实现了 MCP 协议。它可以是：</p>
+      <ul>
+        <li>本地进程（如 Python 脚本）</li>
+        <li>HTTP 服务（如 Express 应用）</li>
+        <li>容器化服务（如 Docker 容器）</li>
+      </ul>
+
+      <h3>2. 工具 (Tools)</h3>
+      <p>工具是 MCP 服务器提供的可执行函数，例如：</p>
+      <ul>
+        <li><code>query_database</code> - 执行 SQL 查询</li>
+        <li><code>fetch_weather</code> - 获取天气数据</li>
+        <li><code>send_email</code> - 发送邮件</li>
+      </ul>
+
+      <h3>3. 资源 (Resources)</h3>
+      <p>资源是 MCP 服务器提供的数据，例如：</p>
+      <ul>
+        <li>数据库表结构</li>
+        <li>API 文档</li>
+        <li>配置文件</li>
+      </ul>
+
+      <h2>MCP 服务器示例</h2>
+
+      <h3>简单的 Python MCP 服务器</h3>
+
+      <pre><code class="language-python">from mcp import Server
+
+server = Server("my-server")
+
+@server.tool()
+def get_weather(city: str) -> str:
+    """获取指定城市的天气"""
+    return f"{city} 今天晴天，温度 25°C"
+
+@server.tool()
+def calculate(expression: str) -> float:
+    """计算数学表达式"""
+    return eval(expression)
+
+if __name__ == "__main__":
+    server.run()</code></pre>
+
+      <h3>TypeScript MCP 服务器</h3>
+
+      <pre><code class="language-typescript">import { Server } from "@modelcontextprotocol/sdk/server";
+
+const server = new Server({
+  name: "my-server",
+  version: "1.0.0"
+});
+
+server.addTool({
+  name: "get-time",
+  description: "获取当前时间",
+  parameters: {
+    timezone: { type: "string", default: "UTC" }
+  },
+  handler: async (params) => {
+    return new Date().toString();
+  }
+});
+
+server.start();</code></pre>
+
+      <h2>配置 MCP 服务器</h2>
+
+      <p>在 <code>.claude/config.json</code> 中配置 MCP 服务器：</p>
+
+      <pre><code class="language-json">{
+  "mcpServers": {
+    "database": {
+      "command": "python",
+      "args": ["mcp_servers/database.py"],
+      "env": {
+        "DB_URL": "postgresql://localhost/mydb"
+      }
+    },
+    "weather": {
+      "command": "node",
+      "args": ["mcp_servers/weather.js"],
+      "env": {
+        "API_KEY": "your-api-key"
+      }
+    }
+  }
+}</code></pre>
+
+      <h2>使用 MCP 的场景</h2>
+
+      <table>
+        <thead>
+          <tr>
+            <th>场景</th>
+            <th>MCP 服务器功能</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>数据库开发</td>
+            <td>查询表结构、执行查询、分析数据</td>
+          </tr>
+          <tr>
+            <td>API 集成</td>
+            <td>调用外部 API、处理响应</td>
+          </tr>
+          <tr>
+            <td>云服务</td>
+            <td>管理 AWS/Azure/GCP 资源</td>
+          </tr>
+          <tr>
+            <td>数据分析</td>
+            <td>读取 CSV/JSON、生成图表</td>
+          </tr>
+          <tr>
+            <td>DevOps</td>
+            <td>部署应用、查看日志、监控服务</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h2>安全考虑</h2>
+
+      <ul>
+        <li><strong>权限控制</strong> - 限制 MCP 服务器能访问的资源</li>
+        <li><strong>数据验证</strong> - 验证所有输入和输出</li>
+        <li><strong>密钥管理</strong> - 使用环境变量存储敏感信息</li>
+        <li><strong>沙箱运行</strong> - 在隔离环境中运行不可信的服务器</li>
+      </ul>
+
+      <h2>下一步</h2>
+      <p>了解如何<a href="using-mcp.html">使用 MCP</a>来集成外部服务。</p>
+
+      <div class="doc-nav-footer">
+        <a class="prev-link" href="../skills/skill-reference.html">← 技能参考</a>
+        <a class="next-link" href="using-mcp.html">使用 MCP →</a>
+      </div>
+    </article>
+  </main>
+
+  <div class="search-results" id="searchResults"></div>
+
+  <script src="../../assets/js/search.js"></script>
+  <script src="../../lib/prism.js"></script>
+</body>
+</html>

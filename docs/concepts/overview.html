@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>概念概述 - Claude Code 中文文档</title>
+  <link rel="stylesheet" href="../../assets/css/style.css">
+  <link rel="stylesheet" href="../../lib/prism.css">
+</head>
+<body>
+  <aside class="sidebar">
+    <div class="brand">
+      <a href="../../index.html" style="text-decoration: none; color: inherit;">Claude Code 中文文档</a>
+    </div>
+    <input class="search-input" type="text" placeholder="搜索文档..." id="searchInput">
+    <nav class="doc-nav">
+      <details class="nav-section">
+        <summary>快速开始</summary>
+        <ul>
+          <li><a href="../getting-started/installation.html">安装</a></li>
+          <li><a href="../getting-started/first-steps.html">第一步</a></li>
+        </ul>
+      </details>
+      <details class="nav-section" open>
+        <summary>概念</summary>
+        <ul>
+          <li><a href="overview.html" style="color: var(--color-link);">概述</a></li>
+          <li><a href="session-management.html">会话管理</a></li>
+        </ul>
+      </details>
+      <details class="nav-section">
+        <summary>命令</summary>
+        <ul>
+          <li><a href="../commands/built-in.html">内置命令</a></li>
+          <li><a href="../commands/slash-commands.html">斜杠命令</a></li>
+        </ul>
+      </details>
+      <details class="nav-section">
+        <summary>技能</summary>
+        <ul>
+          <li><a href="../skills/creating-skills.html">创建技能</a></li>
+          <li><a href="../skills/skill-reference.html">技能参考</a></li>
+        </ul>
+      </details>
+      <details class="nav-section">
+        <summary>MCP</summary>
+        <ul>
+          <li><a href="../mcp/what-is-mcp.html">什么是 MCP</a></li>
+          <li><a href="../mcp/using-mcp.html">使用 MCP</a></li>
+        </ul>
+      </details>
+    </nav>
+  </aside>
+
+  <main class="content">
+    <article class="doc-article">
+      <div class="breadcrumbs">首页 > 概念</div>
+
+      <h1>概念概述</h1>
+
+      <p>Claude Code 是一个强大的 AI 辅助开发工具，理解它的核心概念可以帮助您更好地使用它。</p>
+
+      <h2>核心概念</h2>
+
+      <h3>1. 会话 (Session)</h3>
+      <p>每次运行 <code>claude</code> 命令都会创建一个新的会话。会话维护着您与 Claude 的对话历史，让 Claude 能够理解上下文并做出连贯的回应。</p>
+
+      <h3>2. 上下文感知 (Context Awareness)</h3>
+      <p>Claude Code 能够理解您的项目结构、代码库和当前任务。它会自动扫描您的工作目录，读取相关文件，从而提供更准确的帮助。</p>
+
+      <h3>3. 工具调用 (Tool Use)</h3>
+      <p>Claude 不仅仅是聊天，它可以直接操作您的文件系统：</p>
+      <ul>
+        <li>读取和编辑文件</li>
+        <li>运行命令和脚本</li>
+        <li>搜索代码</li>
+        <li>执行测试</li>
+      </ul>
+
+      <h3>4. 技能 (Skills)</h3>
+      <p>技能是可重用的提示词模板，可以让 Claude 专注于特定任务。您可以创建自定义技能来扩展 Claude 的能力。</p>
+
+      <h3>5. MCP 服务器 (MCP Servers)</h3>
+      <p>MCP (Model Context Protocol) 是一个开放协议，允许 Claude 连接到外部数据源和工具，如数据库、API 和自定义服务。</p>
+
+      <h2>工作流程</h2>
+
+      <p>典型的 Claude Code 工作流程：</p>
+
+      <ol>
+        <li><strong>启动会话</strong> - 在项目目录中运行 <code>claude</code></li>
+        <li><strong>描述任务</strong> - 用自然语言告诉 Claude 您想要做什么</li>
+        <li><strong>审查建议</strong> - Claude 分析问题并提出解决方案</li>
+        <li><strong>执行操作</strong> - 确认后，Claude 会执行具体的操作</li>
+        <li><strong>迭代优化</strong> - 根据结果继续对话，完善解决方案</li>
+      </ol>
+
+      <h2>最佳实践</h2>
+
+      <ul>
+        <li><strong>明确具体</strong> - 清楚地描述您的需求和约束条件</li>
+        <li><strong>逐步进行</strong> - 将复杂任务分解为小步骤</li>
+        <li><strong>审查代码</strong> - 在 Claude 修改代码前仔细审查</li>
+        <li><strong>使用版本控制</strong> - 始终在 Git 仓库中使用 Claude Code</li>
+        <li><strong>保存技能</strong> - 将常用的提示词保存为技能</li>
+      </ul>
+
+      <h2>下一步</h2>
+      <p>了解更多关于<a href="session-management.html">会话管理</a>的详细信息。</p>
+
+      <div class="doc-nav-footer">
+        <a class="prev-link" href="../getting-started/first-steps.html">← 第一步</a>
+        <a class="next-link" href="session-management.html">会话管理 →</a>
+      </div>
+    </article>
+  </main>
+
+  <div class="search-results" id="searchResults"></div>
+
+  <script src="../../assets/js/search.js"></script>
+  <script src="../../lib/prism.js"></script>
+</body>
+</html>

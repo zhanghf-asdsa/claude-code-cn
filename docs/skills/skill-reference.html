@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>技能参考 - Claude Code 中文文档</title>
+  <link rel="stylesheet" href="../../assets/css/style.css">
+  <link rel="stylesheet" href="../../lib/prism.css">
+</head>
+<body>
+  <aside class="sidebar">
+    <div class="brand">
+      <a href="../../index.html" style="text-decoration: none; color: inherit;">Claude Code 中文文档</a>
+    </div>
+    <input class="search-input" type="text" placeholder="搜索文档..." id="searchInput">
+    <nav class="doc-nav">
+      <details class="nav-section">
+        <summary>快速开始</summary>
+        <ul>
+          <li><a href="../getting-started/installation.html">安装</a></li>
+          <li><a href="../getting-started/first-steps.html">第一步</a></li>
+        </ul>
+      </details>
+      <details class="nav-section">
+        <summary>概念</summary>
+        <ul>
+          <li><a href="../concepts/overview.html">概述</a></li>
+          <li><a href="../concepts/session-management.html">会话管理</a></li>
+        </ul>
+      </details>
+      <details class="nav-section">
+        <summary>命令</summary>
+        <ul>
+          <li><a href="../commands/built-in.html">内置命令</a></li>
+          <li><a href="../commands/slash-commands.html">斜杠命令</a></li>
+        </ul>
+      </details>
+      <details class="nav-section" open>
+        <summary>技能</summary>
+        <ul>
+          <li><a href="creating-skills.html">创建技能</a></li>
+          <li><a href="skill-reference.html" style="color: var(--color-link);">技能参考</a></li>
+        </ul>
+      </details>
+      <details class="nav-section">
+        <summary>MCP</summary>
+        <ul>
+          <li><a href="../mcp/what-is-mcp.html">什么是 MCP</a></li>
+          <li><a href="../mcp/using-mcp.html">使用 MCP</a></li>
+        </ul>
+      </details>
+    </nav>
+  </aside>
+
+  <main class="content">
+    <article class="doc-article">
+      <div class="breadcrumbs">首页 > 技能</div>
+
+      <h1>技能参考</h1>
+
+      <p>完整的技能开发参考，包括高级功能和最佳实践。</p>
+
+      <h2>技能类型</h2>
+
+      <h3>1. 审查型技能</h3>
+      <p>用于审查和评估代码、文档等。</p>
+
+      <pre><code class="language-md">---
+name: security-review
+description: 安全审查技能
+tags: [security, review]
+---
+
+# 安全审查
+
+请审查以下内容的安全问题：
+- SQL 注入
+- XSS 漏洞
+- CSRF 保护
+- 敏感数据泄露</code></pre>
+
+      <h3>2. 生成型技能</h3>
+      <p>用于生成代码、文档、测试等。</p>
+
+      <pre><code class="language-md">---
+name: test-generator
+description: 自动生成单元测试
+tags: [testing, generation]
+---
+
+# 测试生成器
+
+根据给定的函数生成完整的单元测试：
+1. 正常情况测试
+2. 边界条件测试
+3. 错误处理测试</code></pre>
+
+      <h3>3. 转换型技能</h3>
+      <p>用于代码重构、格式转换等。</p>
+
+      <pre><code class="language-md">---
+name: typescript-converter
+description: JavaScript 转 TypeScript
+tags: [typescript, conversion]
+---
+
+# TypeScript 转换器
+
+将 JavaScript 代码转换为 TypeScript：
+1. 添加类型注解
+2. 定义接口
+3. 处理 any 类型</code></pre>
+
+      <h2>高级功能</h2>
+
+      <h3>条件触发</h3>
+
+      <p>使用 <code>trigger</code> 字段自动触发技能：</p>
+
+      <pre><code class="language-md">---
+name: fix-typo
+description: 自动修复拼写错误
+trigger:
+  - pattern: "typo|spell"
+    confidence: 0.8
+---</code></pre>
+
+      <h3>技能组合</h3>
+
+      <p>在一个技能中引用其他技能：</p>
+
+      <pre><code class="language-md">---
+name: full-review
+description: 完整代码审查
+---
+
+# 完整审查
+
+请依次执行：
+1. 使用 code-review 技能
+2. 使用 security-review 技能
+3. 使用 performance-review 技能
+
+综合以上结果给出最终建议。</code></pre>
+
+      <h3>变量替换</h3>
+
+      <p>技能中可以使用变量：</p>
+
+      <pre><code class="language-md">---
+name: template
+---
+
+# 模板技能
+
+项目名称：{{PROJECT_NAME}}
+作者：{{AUTHOR}}
+日期：{{DATE}}</code></pre>
+
+      <h2>技能上下文</h2>
+
+      <p>技能可以访问以下上下文信息：</p>
+
+      <table>
+        <thead>
+          <tr>
+            <th>变量</th>
+            <th>说明</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><code>{{FILE_PATH}}</code></td>
+            <td>当前文件路径</td>
+          </tr>
+          <tr>
+            <td><code>{{PROJECT_DIR}}</code></td>
+            <td>项目根目录</td>
+          </tr>
+          <tr>
+            <td><code>{{LANGUAGE}}</code></td>
+            <td>文件语言</td>
+          </tr>
+          <tr>
+            <td><code>{{SELECTION}}</code></td>
+            <td>选中的文本</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h2>技能调试</h2>
+
+      <h3>查看技能信息</h3>
+      <pre><code class="language-bash">/skill list              # 列出所有技能
+/skill info &lt;name&gt;       # 查看技能详情
+/skill test &lt;name&gt;       # 测试技能</code></pre>
+
+      <h3>启用调试模式</h3>
+      <pre><code class="language-bash">/config debug true       # 启用调试
+/使用 code-review 技能     # 执行时会显示详细信息</code></pre>
+
+      <h2>技能发布</h2>
+
+      <h3>发布到 npm</h3>
+
+      <pre><code class="language-bash"># package.json
+{
+  "name": "claude-skills-myproject",
+  "version": "1.0.0",
+  "claude": {
+    "skills": "./skills"
+  }
+}</code></pre>
+
+      <h3>发布到 GitHub</h3>
+
+      <p>创建仓库并添加以下文件：</p>
+      <pre><code>claude-skills/
+├── skills/
+│   └── *.md
+├── README.md
+└── claude.json</code></pre>
+
+      <h2>常见问题</h2>
+
+      <h3>Q: 技能文件放在哪里？</h3>
+      <p>A: 放在项目根目录的 <code>.claude/skills/</code> 目录。</p>
+
+      <h3>Q: 如何在技能中使用文件内容？</h3>
+      <p>A: 使用 <code>{{FILE_PATH}}</code> 变量或让 Claude 先读取文件。</p>
+
+      <h3>Q: 技能可以调用命令吗？</h3>
+      <p>A: 可以，在技能中明确告诉 Claude 运行特定命令。</p>
+
+      <h2>最佳实践</h2>
+
+      <ol>
+        <li><strong>保持专注</strong> - 每个技能只做一件事</li>
+        <li><strong>提供示例</strong> - 包含输入输出示例</li>
+        <li><strong>版本管理</strong> - 使用 Git 管理技能变更</li>
+        <li><strong>文档完善</strong> - 清晰描述技能用途和用法</li>
+        <li><strong>测试验证</strong> - 定期测试技能是否按预期工作</li>
+      </ol>
+
+      <h2>下一步</h2>
+      <p>了解<a href="../mcp/what-is-mcp.html">什么是 MCP</a>来扩展 Claude 的能力。</p>
+
+      <div class="doc-nav-footer">
+        <a class="prev-link" href="creating-skills.html">← 创建技能</a>
+        <a class="next-link" href="../mcp/what-is-mcp.html">什么是 MCP →</a>
+      </div>
+    </article>
+  </main>
+
+  <div class="search-results" id="searchResults"></div>
+
+  <script src="../../assets/js/search.js"></script>
+  <script src="../../lib/prism.js"></script>
+</body>
+</html>

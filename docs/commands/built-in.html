@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>内置命令 - Claude Code 中文文档</title>
+  <link rel="stylesheet" href="../../assets/css/style.css">
+  <link rel="stylesheet" href="../../lib/prism.css">
+</head>
+<body>
+  <aside class="sidebar">
+    <div class="brand">
+      <a href="../../index.html" style="text-decoration: none; color: inherit;">Claude Code 中文文档</a>
+    </div>
+    <input class="search-input" type="text" placeholder="搜索文档..." id="searchInput">
+    <nav class="doc-nav">
+      <details class="nav-section">
+        <summary>快速开始</summary>
+        <ul>
+          <li><a href="../getting-started/installation.html">安装</a></li>
+          <li><a href="../getting-started/first-steps.html">第一步</a></li>
+        </ul>
+      </details>
+      <details class="nav-section">
+        <summary>概念</summary>
+        <ul>
+          <li><a href="../concepts/overview.html">概述</a></li>
+          <li><a href="../concepts/session-management.html">会话管理</a></li>
+        </ul>
+      </details>
+      <details class="nav-section" open>
+        <summary>命令</summary>
+        <ul>
+          <li><a href="built-in.html" style="color: var(--color-link);">内置命令</a></li>
+          <li><a href="slash-commands.html">斜杠命令</a></li>
+        </ul>
+      </details>
+      <details class="nav-section">
+        <summary>技能</summary>
+        <ul>
+          <li><a href="../skills/creating-skills.html">创建技能</a></li>
+          <li><a href="../skills/skill-reference.html">技能参考</a></li>
+        </ul>
+      </details>
+      <details class="nav-section">
+        <summary>MCP</summary>
+        <ul>
+          <li><a href="../mcp/what-is-mcp.html">什么是 MCP</a></li>
+          <li><a href="../mcp/using-mcp.html">使用 MCP</a></li>
+        </ul>
+      </details>
+    </nav>
+  </aside>
+
+  <main class="content">
+    <article class="doc-article">
+      <div class="breadcrumbs">首页 > 命令</div>
+
+      <h1>内置命令</h1>
+
+      <p>Claude Code 提供了一些内置命令来帮助您控制会话和行为。</p>
+
+      <h2>基础命令</h2>
+
+      <h3>/help</h3>
+      <p>显示帮助信息，列出所有可用命令。</p>
+      <pre><code class="language-bash">/help</code></pre>
+
+      <h3>/clear</h3>
+      <p>清除当前会话的对话历史，开始新的对话。这不会影响已修改的文件。</p>
+      <pre><code class="language-bash">/clear</code></pre>
+
+      <h3>/exit</h3>
+      <p>退出当前的 Claude Code 会话。</p>
+      <pre><code class="language-bash">/exit</code></pre>
+      <p>也可以使用 <code>Ctrl+C</code> 来退出。</p>
+
+      <h2>文件操作命令</h2>
+
+      <h3>/read</h3>
+      <p>让 Claude 读取指定文件的内容。</p>
+      <pre><code class="language-bash">/read &lt;文件路径&gt;</code></pre>
+      <p>示例：</p>
+      <pre><code class="language-bash">/read src/app.js</code></pre>
+
+      <h3>/write</h3>
+      <p>让 Claude 写入或创建文件。</p>
+      <pre><code class="language-bash">/write &lt;文件路径&gt;</code></pre>
+      <p>然后 Claude 会询问您要写入的内容。</p>
+
+      <h2>项目管理命令</h2>
+
+      <h3>/git</h3>
+      <p>执行 Git 命令。</p>
+      <pre><code class="language-bash">/git &lt;git 命令&gt;</code></pre>
+      <p>示例：</p>
+      <pre><code class="language-bash">/git status
+/git diff
+/git commit -m "feat: add new feature"</code></pre>
+
+      <h3>/run</h3>
+      <p>运行脚本或命令。</p>
+      <pre><code class="language-bash">/run &lt;命令&gt;</code></pre>
+      <p>示例：</p>
+      <pre><code class="language-bash">/run npm test
+/run python script.py</code></pre>
+
+      <h2>配置命令</h2>
+
+      <h3>/config</h3>
+      <p>查看或修改 Claude Code 配置。</p>
+      <pre><code class="language-bash">/config                    # 查看所有配置
+/config &lt;key&gt;              # 查看特定配置
+/config &lt;key&gt; &lt;value&gt;       # 设置配置</code></pre>
+
+      <h3>/model</h3>
+      <p>切换 AI 模型。</p>
+      <pre><code class="language-bash">/model                    # 查看当前模型
+/model &lt;模型名称&gt;          # 切换模型</code></pre>
+
+      <h2>快捷键</h2>
+
+      <table>
+        <thead>
+          <tr>
+            <th>快捷键</th>
+            <th>功能</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><code>Ctrl+C</code></td>
+            <td>退出会话</td>
+          </tr>
+          <tr>
+            <td><code>Ctrl+D</code></td>
+            <td>退出会话（同 Ctrl+C）</td>
+          </tr>
+          <tr>
+            <td><code>Ctrl+L</code></td>
+            <td>清屏（不清除对话历史）</td>
+          </tr>
+          <tr>
+            <td><code>↑ / ↓</code></td>
+            <td>浏览命令历史</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h2>命令别名</h2>
+
+      <p>一些命令有简写形式：</p>
+
+      <table>
+        <thead>
+          <tr>
+            <th>完整命令</th>
+            <th>简写</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><code>/exit</code></td>
+            <td><code>/x</code></td>
+          </tr>
+          <tr>
+            <td><code>/clear</code></td>
+            <td><code>/c</code></td>
+          </tr>
+          <tr>
+            <td><code>/help</code></td>
+            <td><code>/h</code>, <code>?</code></td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h2>最佳实践</h2>
+
+      <ul>
+        <li><strong>使用 /clear</strong> - 当切换到新任务时清除对话历史</li>
+        <li><strong>定期提交</strong> - 使用 /git commit 定期保存更改</li>
+        <li><strong>测试运行</strong> - 使用 /run 测试您的更改</li>
+        <li><strong>查看帮助</strong> - 忘记命令时使用 /help</li>
+      </ul>
+
+      <h2>下一步</h2>
+      <p>了解<a href="slash-commands.html">斜杠命令</a>来获得更多控制选项。</p>
+
+      <div class="doc-nav-footer">
+        <a class="prev-link" href="../concepts/session-management.html">← 会话管理</a>
+        <a class="next-link" href="slash-commands.html">斜杠命令 →</a>
+      </div>
+    </article>
+  </main>
+
+  <div class="search-results" id="searchResults"></div>
+
+  <script src="../../assets/js/search.js"></script>
+  <script src="../../lib/prism.js"></script>
+</body>
+</html>

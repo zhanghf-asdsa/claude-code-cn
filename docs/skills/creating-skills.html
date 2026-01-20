@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>创建技能 - Claude Code 中文文档</title>
+  <link rel="stylesheet" href="../../assets/css/style.css">
+  <link rel="stylesheet" href="../../lib/prism.css">
+</head>
+<body>
+  <aside class="sidebar">
+    <div class="brand">
+      <a href="../../index.html" style="text-decoration: none; color: inherit;">Claude Code 中文文档</a>
+    </div>
+    <input class="search-input" type="text" placeholder="搜索文档..." id="searchInput">
+    <nav class="doc-nav">
+      <details class="nav-section">
+        <summary>快速开始</summary>
+        <ul>
+          <li><a href="../getting-started/installation.html">安装</a></li>
+          <li><a href="../getting-started/first-steps.html">第一步</a></li>
+        </ul>
+      </details>
+      <details class="nav-section">
+        <summary>概念</summary>
+        <ul>
+          <li><a href="../concepts/overview.html">概述</a></li>
+          <li><a href="../concepts/session-management.html">会话管理</a></li>
+        </ul>
+      </details>
+      <details class="nav-section">
+        <summary>命令</summary>
+        <ul>
+          <li><a href="../commands/built-in.html">内置命令</a></li>
+          <li><a href="../commands/slash-commands.html">斜杠命令</a></li>
+        </ul>
+      </details>
+      <details class="nav-section" open>
+        <summary>技能</summary>
+        <ul>
+          <li><a href="creating-skills.html" style="color: var(--color-link);">创建技能</a></li>
+          <li><a href="skill-reference.html">技能参考</a></li>
+        </ul>
+      </details>
+      <details class="nav-section">
+        <summary>MCP</summary>
+        <ul>
+          <li><a href="../mcp/what-is-mcp.html">什么是 MCP</a></li>
+          <li><a href="../mcp/using-mcp.html">使用 MCP</a></li>
+        </ul>
+      </details>
+    </nav>
+  </aside>
+
+  <main class="content">
+    <article class="doc-article">
+      <div class="breadcrumbs">首页 > 技能</div>
+
+      <h1>创建技能</h1>
+
+      <p>技能（Skills）是可重用的提示词模板，可以让 Claude 专注于特定任务，提高效率和一致性。</p>
+
+      <h2>什么是技能？</h2>
+
+      <p>技能是一个 Markdown 文件，包含：</p>
+      <ul>
+        <li><strong>元数据</strong> - 技能名称、描述、触发条件</li>
+        <li><strong>提示词</strong> - 给 Claude 的具体指令</li>
+        <li><strong>示例</strong> - 可选的使用示例</li>
+      </ul>
+
+      <h2>技能文件结构</h2>
+
+      <p>技能文件存放在 <code>.claude/skills</code> 目录：</p>
+
+      <pre><code>.claude/
+└── skills/
+    ├── code-review.md
+    ├── refactor.md
+    └── test-helper.md</code></pre>
+
+      <h2>创建您的第一个技能</h2>
+
+      <h3>步骤 1：创建技能文件</h3>
+
+      <p>在 <code>.claude/skills</code> 目录创建 <code>code-review.md</code>：</p>
+
+      <pre><code class="language-md">---
+name: code-review
+description: 审查代码质量、安全性和最佳实践
+---
+
+# 代码审查技能
+
+请按照以下标准审查代码：
+
+1. **代码质量**
+   - 代码是否清晰易读？
+   - 是否遵循了项目的编码规范？
+   - 变量和函数命名是否恰当？
+
+2. **安全性**
+   - 是否存在常见的安全漏洞？
+   - 用户输入是否正确验证？
+   - 敏感数据是否得到保护？
+
+3. **性能**
+   - 是否存在性能瓶颈？
+   - 算法复杂度是否合理？
+   - 是否有优化空间？
+
+4. **最佳实践**
+   - 是否遵循了语言和框架的最佳实践？
+   - 错误处理是否充分？
+   - 测试覆盖是否足够？
+
+请提供具体的改进建议，并解释原因。</code></pre>
+
+      <h3>步骤 2：使用技能</h3>
+
+      <p>在会话中，您可以：</p>
+
+      <pre><code class="language-bash"># 使用技能
+请使用 code-review 技能审查以下文件
+
+# 或者直接调用
+/review src/app.js</code></pre>
+
+      <h2>技能元数据</h2>
+
+      <p>技能文件的 YAML 前言可以包含以下字段：</p>
+
+      <table>
+        <thead>
+          <tr>
+            <th>字段</th>
+            <th>说明</th>
+            <th>必需</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><code>name</code></td>
+            <td>技能名称</td>
+            <td>是</td>
+          </tr>
+          <tr>
+            <td><code>description</code></td>
+            <td>技能描述</td>
+            <td>是</td>
+          </tr>
+          <tr>
+            <td><code>version</code></td>
+            <td>版本号</td>
+            <td>否</td>
+          </tr>
+          <tr>
+            <td><code>author</code></td>
+            <td>作者</td>
+            <td>否</td>
+          </tr>
+          <tr>
+            <td><code>tags</code></td>
+            <td>标签数组</td>
+            <td>否</td>
+          </tr>
+          <tr>
+            <td><code>trigger</code></td>
+            <td>触发条件</td>
+            <td>否</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h2>技能模板</h2>
+
+      <p>使用模板可以快速创建技能：</p>
+
+      <pre><code class="language-md">---
+name: {{技能名称}}
+description: {{技能描述}}
+tags: [{{标签1}}, {{标签2}}]
+---
+
+# {{技能名称}}
+
+## 目标
+{{描述这个技能的目标}}
+
+## 使用场景
+{{描述何时使用这个技能}}
+
+## 步骤
+1. {{步骤 1}}
+2. {{步骤 2}}
+3. {{步骤 3}}
+
+## 注意事项
+{{使用时需要注意的事项}}</code></pre>
+
+      <h2>技能最佳实践</h2>
+
+      <ol>
+        <li><strong>明确目标</strong> - 每个技能应该专注于一个特定任务</li>
+        <li><strong>详细说明</strong> - 提供清晰的步骤和期望</li>
+        <li><strong>包含示例</strong> - 添加输入输出示例</li>
+        <li><strong>版本控制</strong> - 将技能文件纳入 Git 管理</li>
+        <li><strong>持续改进</strong> - 根据使用反馈优化技能</li>
+      </ol>
+
+      <h2>共享技能</h2>
+
+      <p>您可以将技能发布到：</p>
+
+      <ul>
+        <li><strong>GitHub</strong> - 创建技能仓库分享</li>
+        <li><strong>npm</strong> - 打包为 npm 包</li>
+        <li><strong>团队</strong> - 在团队内部共享</li>
+      </ul>
+
+      <h2>下一步</h2>
+      <p>查看<a href="skill-reference.html">技能参考</a>了解更多高级用法。</p>
+
+      <div class="doc-nav-footer">
+        <a class="prev-link" href="../commands/slash-commands.html">← 斜杠命令</a>
+        <a class="next-link" href="skill-reference.html">技能参考 →</a>
+      </div>
+    </article>
+  </main>
+
+  <div class="search-results" id="searchResults"></div>
+
+  <script src="../../assets/js/search.js"></script>
+  <script src="../../lib/prism.js"></script>
+</body>
+</html>

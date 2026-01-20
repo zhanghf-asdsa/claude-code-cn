@@ -3,7 +3,7 @@
     {
       "title": "首页",
       "url": "index.html",
-      "keywords": ["claude code", "首页", "入门", "介绍"],
+      "keywords": ["claude code", "首页", "入门", "介绍", "welcome"],
       "summary": "Claude Code 中文文档首页，快速了解和开始使用"
     },
     {
@@ -17,6 +17,54 @@
       "url": "docs/getting-started/first-steps.html",
       "keywords": ["入门", "开始", "命令", "help", "clear", "第一次"],
       "summary": "Claude Code 第一次使用指南，常用命令介绍"
+    },
+    {
+      "title": "概念概述",
+      "url": "docs/concepts/overview.html",
+      "keywords": ["概念", "概述", "会话", "上下文", "工具", "技能", "mcp"],
+      "summary": "Claude Code 核心概念介绍：会话、上下文感知、工具调用、技能和 MCP"
+    },
+    {
+      "title": "会话管理",
+      "url": "docs/concepts/session-management.html",
+      "keywords": ["会话", "管理", "上下文", "历史", "持久化"],
+      "summary": "理解 Claude Code 会话管理机制和最佳实践"
+    },
+    {
+      "title": "内置命令",
+      "url": "docs/commands/built-in.html",
+      "keywords": ["命令", "内置", "help", "clear", "exit", "read", "write", "git", "run"],
+      "summary": "Claude Code 内置命令参考：/help、/clear、/exit 等"
+    },
+    {
+      "title": "斜杠命令",
+      "url": "docs/commands/slash-commands.html",
+      "keywords": ["斜杠命令", "slash", "命令", "快捷键", "别名"],
+      "summary": "完整的斜杠命令列表和高级用法"
+    },
+    {
+      "title": "创建技能",
+      "url": "docs/skills/creating-skills.html",
+      "keywords": ["技能", "创建", "开发", "模板", "技能文件"],
+      "summary": "学习如何创建自定义技能来扩展 Claude Code"
+    },
+    {
+      "title": "技能参考",
+      "url": "docs/skills/skill-reference.html",
+      "keywords": ["技能", "参考", "高级", "调试", "发布"],
+      "summary": "技能开发完整参考，包括高级功能和最佳实践"
+    },
+    {
+      "title": "什么是 MCP",
+      "url": "docs/mcp/what-is-mcp.html",
+      "keywords": ["mcp", "protocol", "协议", "服务器", "工具", "资源"],
+      "summary": "Model Context Protocol 介绍，让 Claude 连接外部服务"
+    },
+    {
+      "title": "使用 MCP",
+      "url": "docs/mcp/using-mcp.html",
+      "keywords": ["mcp", "使用", "配置", "示例", "调试"],
+      "summary": "MCP 服务器配置和使用指南"
     }
   ]
 }
