@@ -1,0 +1,10 @@
+{
+  "pages": [
+    {
+      "title": "首页",
+      "url": "index.html",
+      "keywords": ["claude code", "首页", "入门", "介绍"],
+      "summary": "Claude Code 中文文档首页"
+    }
+  ]
+}
