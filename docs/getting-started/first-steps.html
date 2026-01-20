@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>第一步 - Claude Code 中文文档</title>
+  <link rel="stylesheet" href="../../assets/css/style.css">
+  <link rel="stylesheet" href="../../lib/prism.css">
+</head>
+<body>
+  <aside class="sidebar">
+    <div class="brand">
+      <a href="../../index.html" style="text-decoration: none; color: inherit;">Claude Code 中文文档</a>
+    </div>
+    <input class="search-input" type="text" placeholder="搜索文档..." id="searchInput">
+    <nav class="doc-nav">
+      <details class="nav-section" open>
+        <summary>快速开始</summary>
+        <ul>
+          <li><a href="installation.html">安装</a></li>
+          <li><a href="first-steps.html" style="color: var(--color-link);">第一步</a></li>
+        </ul>
+      </details>
+      <details class="nav-section">
+        <summary>概念</summary>
+        <ul>
+          <li><a href="../concepts/overview.html">概述</a></li>
+        </ul>
+      </details>
+    </nav>
+  </aside>
+
+  <main class="content">
+    <article class="doc-article">
+      <div class="breadcrumbs">首页 > 快速开始</div>
+
+      <h1>第一步</h1>
+
+      <p>恭喜您安装了 Claude Code！让我们开始第一次对话。</p>
+
+      <h2>启动 Claude Code</h2>
+      <p>在您的项目目录中运行：</p>
+      <pre><code class="language-bash">claude</code></pre>
+
+      <h2>您的第一个请求</h2>
+      <p>尝试让 Claude Code 帮您完成一个简单任务：</p>
+      <pre><code class="language-bash">> 帮我创建一个 Hello World 函数</code></pre>
+
+      <h2>常用命令</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>命令</th>
+            <th>说明</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><code>/help</code></td>
+            <td>显示帮助信息</td>
+          </tr>
+          <tr>
+            <td><code>/clear</code></td>
+            <td>清除对话历史</td>
+          </tr>
+          <tr>
+            <td><code>Ctrl+C</code></td>
+            <td>退出 Claude Code</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h2>下一步</h2>
+      <p>现在您已经了解了基本操作，查看<a href="../concepts/overview.html">概念概述</a>了解更多。</p>
+
+      <div class="doc-nav-footer">
+        <a class="prev-link" href="installation.html">← 安装</a>
+        <a class="next-link" href="../concepts/overview.html">概念概述 →</a>
+      </div>
+    </article>
+  </main>
+
+  <div class="search-results" id="searchResults"></div>
+
+  <script src="../../assets/js/search.js"></script>
+  <script src="../../lib/prism.js"></script>
+</body>
+</html>

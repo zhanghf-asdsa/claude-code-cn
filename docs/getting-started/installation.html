@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>安装 Claude Code - Claude Code 中文文档</title>
+  <link rel="stylesheet" href="../../assets/css/style.css">
+  <link rel="stylesheet" href="../../lib/prism.css">
+</head>
+<body>
+  <aside class="sidebar">
+    <div class="brand">
+      <a href="../../index.html" style="text-decoration: none; color: inherit;">Claude Code 中文文档</a>
+    </div>
+    <input class="search-input" type="text" placeholder="搜索文档..." id="searchInput">
+    <nav class="doc-nav">
+      <details class="nav-section" open>
+        <summary>快速开始</summary>
+        <ul>
+          <li><a href="installation.html" style="color: var(--color-link);">安装</a></li>
+          <li><a href="first-steps.html">第一步</a></li>
+        </ul>
+      </details>
+      <details class="nav-section">
+        <summary>概念</summary>
+        <ul>
+          <li><a href="../concepts/overview.html">概述</a></li>
+        </ul>
+      </details>
+    </nav>
+  </aside>
+
+  <main class="content">
+    <article class="doc-article">
+      <div class="breadcrumbs">首页 > 快速开始</div>
+
+      <h1>安装 Claude Code</h1>
+
+      <p>Claude Code 是 Anthropic 官方提供的 AI 辅助开发命令行工具。本指南将帮助您完成安装。</p>
+
+      <h2>系统要求</h2>
+      <ul>
+        <li>Node.js 18 或更高版本</li>
+        <li>npm、yarn 或 pnpm</li>
+        <li>macOS、Linux 或 Windows (WSL)</li>
+      </ul>
+
+      <h2>安装步骤</h2>
+
+      <h3>使用 npm 安装</h3>
+      <pre><code class="language-bash">npm install -g @anthropic-ai/claude-code</code></pre>
+
+      <h3>使用 yarn 安装</h3>
+      <pre><code class="language-bash">yarn global add @anthropic-ai/claude-code</code></pre>
+
+      <h3>使用 pnpm 安装</h3>
+      <pre><code class="language-bash">pnpm add -g @anthropic-ai/claude-code</code></pre>
+
+      <h2>验证安装</h2>
+      <p>安装完成后，运行以下命令验证：</p>
+      <pre><code class="language-bash">claude --version</code></pre>
+
+      <p>如果显示版本号，说明安装成功！</p>
+
+      <h2>下一步</h2>
+      <p>安装完成后，请查看<a href="first-steps.html">第一步</a>了解如何开始使用。</p>
+
+      <div class="doc-nav-footer">
+        <a class="prev-link" href="../../index.html">← 首页</a>
+        <a class="next-link" href="first-steps.html">第一步 →</a>
+      </div>
+    </article>
+  </main>
+
+  <div class="search-results" id="searchResults"></div>
+
+  <script src="../../assets/js/search.js"></script>
+  <script src="../../lib/prism.js"></script>
+</body>
+</html>
