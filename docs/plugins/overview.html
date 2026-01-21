@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>插件概述 - Claude Code 中文文档</title>
+  <link rel="stylesheet" href="../../assets/css/style.css">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" rel="stylesheet">
+</head>
+<body>
+  <aside class="sidebar">
+    <div class="brand">
+      <a href="../../index.html" style="text-decoration: none; color: inherit;">Claude Code 中文文档</a>
+    </div>
+    <input class="search-input" type="text" placeholder="搜索文档..." id="searchInput">
+    <nav class="doc-nav">
+      <details class="nav-section">
+        <summary>快速开始</summary>
+        <ul>
+          <li><a href="../getting-started/installation.html">安装</a></li>
+          <li><a href="../getting-started/first-steps.html">第一步</a></li>
+        </ul>
+      </details>
+      <details class="nav-section">
+        <summary>概念</summary>
+        <ul>
+          <li><a href="../concepts/overview.html">概述</a></li>
+          <li><a href="../concepts/session-management.html">会话管理</a></li>
+        </ul>
+      </details>
+      <details class="nav-section">
+        <summary>命令</summary>
+        <ul>
+          <li><a href="../commands/built-in.html">内置命令</a></li>
+          <li><a href="../commands/slash-commands.html">斜杠命令</a></li>
+        </ul>
+      </details>
+      <details class="nav-section">
+        <summary>技能</summary>
+        <ul>
+          <li><a href="../skills/creating-skills.html">创建技能</a></li>
+          <li><a href="../skills/skill-reference.html">技能参考</a></li>
+        </ul>
+      </details>
+      <details class="nav-section">
+        <summary>MCP</summary>
+        <ul>
+          <li><a href="../mcp/what-is-mcp.html">什么是 MCP</a></li>
+          <li><a href="../mcp/using-mcp.html">使用 MCP</a></li>
+        </ul>
+      </details>
+      <details class="nav-section" open>
+        <summary>插件</summary>
+        <ul>
+          <li><a href="overview.html" style="color: var(--color-link);">概述</a></li>
+          <li><a href="plugin-structure.html">插件结构</a></li>
+          <li><a href="slash-commands.html">斜杠命令</a></li>
+          <li><a href="agents.html">代理（Agents）</a></li>
+          <li><a href="skills.html">技能（Skills）</a></li>
+          <li><a href="hooks.html">钩子（Hooks）</a></li>
+        </ul>
+      </details>
+    </nav>
+  </aside>
+
+  <main class="content">
+    <article class="doc-article">
+      <div class="breadcrumbs">首页 > 插件</div>
+
+      <h1>插件概述</h1>
+
+      <p>Claude Code 插件是一种强大的扩展方式，允许您自定义和增强 Claude Code 的功能。通过插件，您可以添加自定义命令、创建专门的代理、实现技能系统，并集成外部工具。</p>
+
+      <h2>为什么使用插件？</h2>
+
+      <ul>
+        <li><strong>自定义命令</strong> - 创建团队专用的斜杠命令，自动化常见工作流程</li>
+        <li><strong>专门代理</strong> - 针对特定任务（如代码审查、文档生成）的 AI 代理</li>
+        <li><strong>技能系统</strong> - 为 Claude 添加特定领域的知识和能力</li>
+        <li><strong>事件驱动</strong> - 通过钩子在特定事件发生时执行自定义逻辑</li>
+        <li><strong>工具集成</strong> - 通过 MCP 连接外部服务和 API</li>
+        <li><strong>团队共享</strong> - 通过插件市场与团队共享自定义功能</li>
+      </ul>
+
+      <h2>插件组件</h2>
+
+      <p>一个 Claude Code 插件可以包含以下组件：</p>
+
+      <h3>1. 斜杠命令（Commands）</h3>
+      <p>通过简单的斜杠命令触发复杂的任务。例如：</p>
+      <pre><code class="language-bash">/review          # 代码审查
+/deploy          # 部署应用
+/test            # 运行测试</code></pre>
+
+      <h3>2. 代理（Agents）</h3>
+      <p>具有特定专业知识和行为的自主 AI 代理。例如：</p>
+      <ul>
+        <li>代码审查专家</li>
+        <li>API 文档编写者</li>
+        <li>测试生成器</li>
+      </ul>
+
+      <h3>3. 技能（Skills）</h3>
+      <p>为 Claude 添加特定领域的专业知识。技能会根据上下文自动激活。</p>
+
+      <h3>4. 钩子（Hooks）</h3>
+      <p>在特定事件发生时执行自定义脚本：</p>
+      <ul>
+        <li><code>PreToolUse</code> - 工具使用前</li>
+        <li><code>PostToolUse</code> - 工具使用后</li>
+        <li><code>SessionStart</code> - 会话开始时</li>
+        <li><code>Stop</code> - 会话结束时</li>
+        <li><code>UserPromptSubmit</code> - 用户提交提示时</li>
+      </ul>
+
+      <h3>5. MCP 服务器</h3>
+      <p>集成外部工具和服务，支持多种通信方式：</p>
+      <ul>
+        <li><strong>stdio</strong> - 本地进程通信</li>
+        <li><strong>SSE</strong> - 服务器发送事件（支持 OAuth）</li>
+        <li><strong>HTTP</strong> - RESTful API 调用</li>
+        <li><strong>WebSocket</strong> - 实时双向通信</li>
+      </ul>
+
+      <h2>插件目录结构</h2>
+
+      <pre><code class="language-text">plugin-name/
+├── .claude-plugin/
+│   └── plugin.json          # 插件清单（必需）
+├── commands/                 # 斜杠命令（.md 文件）
+│   └── my-command.md
+├── agents/                   # 代理定义（.md 文件）
+│   └── my-agent.md
+├── skills/                   # 技能模块
+│   └── my-skill/
+│       └── SKILL.md         # 技能定义
+├── hooks/                   # 事件处理器
+│   ├── hooks.json           # 钩子配置
+│   └── my-script.py         # 钩子脚本
+├── .mcp.json                # MCP 服务器配置
+└── README.md                # 插件文档</code></pre>
+
+      <h2>安装和使用插件</h2>
+
+      <h3>从插件市场安装</h3>
+
+      <pre><code class="language-bash"># 列出可用插件
+claude
+
+# 在 Claude Code 中安装插件
+> /plugin install superpowers
+
+# 查看已安装的插件
+> /plugin list</code></pre>
+
+      <h3>本地开发插件</h3>
+
+      <p>在项目目录创建 <code>.claude/</code> 文件夹并添加插件配置：</p>
+
+      <pre><code class="language-json">{
+  "plugins": [
+    "path/to/local-plugin"
+  ]
+}</code></pre>
+
+      <h2>插件清单（plugin.json）</h2>
+
+      <p>每个插件必须有一个 <code>plugin.json</code> 清单文件：</p>
+
+      <pre><code class="language-json">{
+  "name": "my-plugin",
+  "version": "1.0.0",
+  "description": "我的 Claude Code 插件",
+  "author": "Your Name",
+  "license": "MIT"
+}</code></pre>
+
+      <h2>下一步</h2>
+
+      <ul>
+        <li><a href="plugin-structure.html">了解插件结构详解</a></li>
+        <li><a href="slash-commands.html">创建斜杠命令</a></li>
+        <li><a href="agents.html">开发代理</a></li>
+        <li><a href="skills.html">构建技能</a></li>
+        <li><a href="hooks.html">使用钩子</a></li>
+      </ul>
+
+      <div class="doc-nav-footer">
+        <a class="prev-link" href="../mcp/using-mcp.html">← 使用 MCP</a>
+        <a class="next-link" href="plugin-structure.html">插件结构 →</a>
+      </div>
+    </article>
+  </main>
+
+  <div class="search-results" id="searchResults"></div>
+
+  <script src="../../assets/js/search.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-bash.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-json.min.js"></script>
+</body>
+</html>

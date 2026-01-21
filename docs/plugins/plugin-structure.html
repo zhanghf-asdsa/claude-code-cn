@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>插件结构 - Claude Code 中文文档</title>
+  <link rel="stylesheet" href="../../assets/css/style.css">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" rel="stylesheet">
+</head>
+<body>
+  <aside class="sidebar">
+    <div class="brand">
+      <a href="../../index.html" style="text-decoration: none; color: inherit;">Claude Code 中文文档</a>
+    </div>
+    <input class="search-input" type="text" placeholder="搜索文档..." id="searchInput">
+    <nav class="doc-nav">
+      <details class="nav-section">
+        <summary>快速开始</summary>
+        <ul>
+          <li><a href="../getting-started/installation.html">安装</a></li>
+          <li><a href="../getting-started/first-steps.html">第一步</a></li>
+        </ul>
+      </details>
+      <details class="nav-section">
+        <summary>概念</summary>
+        <ul>
+          <li><a href="../concepts/overview.html">概述</a></li>
+          <li><a href="../concepts/session-management.html">会话管理</a></li>
+        </ul>
+      </details>
+      <details class="nav-section">
+        <summary>命令</summary>
+        <ul>
+          <li><a href="../commands/built-in.html">内置命令</a></li>
+          <li><a href="../commands/slash-commands.html">斜杠命令</a></li>
+        </ul>
+      </details>
+      <details class="nav-section">
+        <summary>技能</summary>
+        <ul>
+          <li><a href="../skills/creating-skills.html">创建技能</a></li>
+          <li><a href="../skills/skill-reference.html">技能参考</a></li>
+        </ul>
+      </details>
+      <details class="nav-section">
+        <summary>MCP</summary>
+        <ul>
+          <li><a href="../mcp/what-is-mcp.html">什么是 MCP</a></li>
+          <li><a href="../mcp/using-mcp.html">使用 MCP</a></li>
+        </ul>
+      </details>
+      <details class="nav-section" open>
+        <summary>插件</summary>
+        <ul>
+          <li><a href="overview.html">概述</a></li>
+          <li><a href="plugin-structure.html" style="color: var(--color-link);">插件结构</a></li>
+          <li><a href="slash-commands.html">斜杠命令</a></li>
+          <li><a href="agents.html">代理（Agents）</a></li>
+          <li><a href="skills.html">技能（Skills）</a></li>
+          <li><a href="hooks.html">钩子（Hooks）</a></li>
+        </ul>
+      </details>
+    </nav>
+  </aside>
+
+  <main class="content">
+    <article class="doc-article">
+      <div class="breadcrumbs">首页 > 插件</div>
+
+      <h1>插件结构</h1>
+
+      <p>Claude Code 插件遵循标准的目录结构，确保组件能够被正确发现和加载。</p>
+
+      <h2>标准目录结构</h2>
+
+      <pre><code class="language-text">plugin-name/
+├── .claude-plugin/
+│   └── plugin.json          # 插件清单（必需）
+├── commands/                 # 斜杠命令（可选）
+│   └── my-command.md
+├── agents/                   # 代理定义（可选）
+│   └── my-agent.md
+├── skills/                   # 技能模块（可选）
+│   └── skill-name/
+│       └── SKILL.md         # 每个技能必需
+├── hooks/                   # 事件处理器（可选）
+│   ├── hooks.json           # 钩子配置
+│   └── pre-tool-use.py      # 钩子脚本
+├── .mcp.json                # MCP 服务器配置（可选）
+├── scripts/                 # 辅助脚本（可选）
+│   └── helper.sh
+└── README.md                # 插件文档（推荐）</code></pre>
+
+      <h2>必需文件</h2>
+
+      <h3>plugin.json</h3>
+
+      <p>每个插件必须有 <code>.claude-plugin/plugin.json</code> 清单文件：</p>
+
+      <pre><code class="language-json">{
+  "name": "my-plugin",
+  "version": "1.0.0",
+  "description": "插件描述",
+  "author": "作者名",
+  "license": "MIT",
+  "claude": {
+    "minVersion": "1.0.0"
+  }
+}</code></pre>
+
+      <h2>组件目录详解</h2>
+
+      <h3>commands/ - 斜杠命令</h3>
+
+      <p>存放自定义斜杠命令的 Markdown 文件：</p>
+
+      <pre><code class="language-markdown">---
+description: 部署应用到生产环境
+allowed-tools: Bash
+---
+
+部署应用：
+1. 运行测试: !`npm test`
+2. 构建项目: !`npm run build`
+3. 部署到服务器</code></pre>
+
+      <h3>agents/ - 代理定义</h3>
+
+      <p>定义专门的 AI 代理及其行为：</p>
+
+      <pre><code class="language-markdown">---
+name: code-reviewer
+description: 用于代码审查的专家代理
+tools: ["Read", "Grep", "Glob"]
+---
+
+你是一位代码审查专家...
+
+**职责：**
+- 识别 bug 和逻辑错误
+- 检查代码风格一致性
+- 提供改进建议</code></pre>
+
+      <h3>skills/ - 技能模块</h3>
+
+      <p>每个技能都有自己的子目录，包含 <code>SKILL.md</code> 文件：</p>
+
+      <pre><code class="language-text">skills/
+├── code-review/
+│   └── SKILL.md
+├── testing/
+│   └── SKILL.md
+└── documentation/
+    ├── SKILL.md
+    ├── references/
+    │   └── examples.md
+    └── examples/
+        └── test-case.md</code></pre>
+
+      <h3>hooks/ - 事件处理器</h3>
+
+      <p>配置文件和脚本：</p>
+
+      <pre><code class="language-json">{
+  "description": "我的自定义钩子",
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 hooks/validate.py",
+            "timeout": 10
+          }
+        ]
+      }
+    ],
+    "SessionStart": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash hooks/init-session.sh"
+          }
+        ]
+      }
+    ]
+  }
+}</code></pre>
+
+      <h3>.mcp.json - MCP 配置</h3>
+
+      <p>配置外部 MCP 服务器：</p>
+
+      <pre><code class="language-json">{
+  "mcpServers": {
+    "database": {
+      "command": "python",
+      "args": ["mcp_servers/db.py"],
+      "env": {
+        "DB_HOST": "localhost",
+        "DB_PORT": "5432"
+      }
+    },
+    "api": {
+      "url": "https://api.example.com",
+      "headers": {
+        "Authorization": "Bearer ${API_TOKEN}"
+      }
+    }
+  }
+}</code></pre>
+
+      <h2>自动发现规则</h2>
+
+      <ul>
+        <li><strong>命令</strong> - <code>commands/</code> 目录中的所有 <code>.md</code> 文件</li>
+        <li><strong>代理</strong> - <code>agents/</code> 目录中的所有 <code>.md</code> 文件</li>
+        <li><strong>技能</strong> - <code>skills/*/SKILL.md</code> 文件自动加载</li>
+        <li><strong>钩子</strong> - <code>hooks/hooks.json</code> 或 <code>hooks.json</code> 文件</li>
+      </ul>
+
+      <h2>环境变量</h2>
+
+      <p>插件可以使用以下环境变量：</p>
+
+      <table>
+        <thead>
+          <tr>
+            <th>变量</th>
+            <th>描述</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><code>CLAUDE_PLUGIN_ROOT</code></td>
+            <td>插件根目录</td>
+          </tr>
+          <tr>
+            <td><code>CLAUDE_PROJECT_DIR</code></td>
+            <td>项目目录</td>
+          </tr>
+          <tr>
+            <td><code>CLAUDE_ENV_FILE</code></td>
+            <td>环境变量文件路径</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h2>最佳实践</h2>
+
+      <ol>
+        <li><strong>遵循结构</strong> - 所有组件必须在插件根目录级别，不能嵌套</li>
+        <li><strong>使用描述</strong> - 为每个组件添加清晰的描述</li>
+        <li><strong>限制工具</strong> - 使用 <code>allowed-tools</code> 限制访问</li>
+        <li><strong>错误处理</strong> - 钩子脚本应正确处理错误</li>
+        <li><strong>文档完善</strong> - 包含 README 和使用示例</li>
+      </ol>
+
+      <h2>相关文档</h2>
+
+      <ul>
+        <li><a href="overview.html">插件概述</a></li>
+        <li><a href="slash-commands.html">斜杠命令</a></li>
+        <li><a href="agents.html">代理开发</a></li>
+        <li><a href="skills.html">技能开发</a></li>
+        <li><a href="hooks.html">钩子系统</a></li>
+      </ul>
+
+      <div class="doc-nav-footer">
+        <a class="prev-link" href="overview.html">← 插件概述</a>
+        <a class="next-link" href="slash-commands.html">斜杠命令 →</a>
+      </div>
+    </article>
+  </main>
+
+  <div class="search-results" id="searchResults"></div>
+
+  <script src="../../assets/js/search.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-bash.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-json.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-markdown.min.js"></script>
+</body>
+</html>

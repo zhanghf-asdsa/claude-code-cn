@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>钩子（Hooks）- Claude Code 中文文档</title>
+  <link rel="stylesheet" href="../../assets/css/style.css">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" rel="stylesheet">
+</head>
+<body>
+  <aside class="sidebar">
+    <div class="brand"><a href="../../index.html" style="text-decoration: none; color: inherit;">Claude Code 中文文档</a></div>
+    <input class="search-input" type="text" placeholder="搜索文档..." id="searchInput">
+    <nav class="doc-nav">
+      <details class="nav-section"><summary>快速开始</summary><ul><li><a href="../getting-started/installation.html">安装</a></li><li><a href="../getting-started/first-steps.html">第一步</a></li></ul></details>
+      <details class="nav-section"><summary>概念</summary><ul><li><a href="../concepts/overview.html">概述</a></li><li><a href="../concepts/session-management.html">会话管理</a></li></ul></details>
+      <details class="nav-section"><summary>命令</summary><ul><li><a href="../commands/built-in.html">内置命令</a></li><li><a href="../commands/slash-commands.html">斜杠命令</a></li></ul></details>
+      <details class="nav-section"><summary>技能</summary><ul><li><a href="../skills/creating-skills.html">创建技能</a></li><li><a href="../skills/skill-reference.html">技能参考</a></li></ul></details>
+      <details class="nav-section"><summary>MCP</summary><ul><li><a href="../mcp/what-is-mcp.html">什么是 MCP</a></li><li><a href="../mcp/using-mcp.html">使用 MCP</a></li></ul></details>
+      <details class="nav-section" open><summary>插件</summary><ul><li><a href="overview.html">概述</a></li><li><a href="plugin-structure.html">插件结构</a></li><li><a href="slash-commands.html">斜杠命令</a></li><li><a href="agents.html">代理（Agents）</a></li><li><a href="skills.html">技能（Skills）</a></li><li><a href="hooks.html" style="color: var(--color-link);">钩子（Hooks）</a></li></ul></details>
+    </nav>
+  </aside>
+
+  <main class="content">
+    <article class="doc-article">
+      <div class="breadcrumbs">首页 > 插件</div>
+      <h1>钩子（Hooks）</h1>
+      <p>钩子（Hooks）允许您在 Claude Code 的特定事件发生时执行自定义脚本，实现自动化工作流程和自定义行为。</p>
+
+      <h2>什么是钩子？</h2>
+      <p>钩子是事件驱动的脚本，在特定事件发生时自动触发：</p>
+      <ul>
+        <li><strong>工具使用前后</strong> - 验证或修改操作</li>
+        <li><strong>会话开始/结束</strong> - 初始化环境或清理资源</li>
+        <li><strong>用户提交时</strong> - 验证或增强输入</li>
+        <li><strong>代理切换时</strong> - 同步状态或日志记录</li>
+      </ul>
+
+      <h2>可用钩子类型</h2>
+
+      <h3>PreToolUse</h3>
+      <p>在任何工具使用之前触发。适用于：</p>
+      <ul>
+        <li>验证操作安全性</li>
+        <li>限制敏感命令</li>
+        <li>记录操作日志</li>
+        <li>修改工具参数</li>
+      </ul>
+
+      <h3>PostToolUse</h3>
+      <p>在任何工具使用之后触发。适用于：</p>
+      <ul>
+        <li>处理工具输出</li>
+        <li>触发后续操作</li>
+        <li>更新状态文件</li>
+        <li>发送通知</li>
+      </ul>
+
+      <h3>SessionStart</h3>
+      <p>在会话开始时触发。适用于：</p>
+      <ul>
+        <li>初始化开发环境</li>
+        <li>加载项目配置</li>
+        <li>检查依赖更新</li>
+        <li>显示欢迎信息</li>
+      </ul>
+
+      <h3>Stop</h3>
+      <p>在会话结束时触发。适用于：</p>
+      <ul>
+        <li>清理临时文件</li>
+        <li>保存会话状态</li>
+        <li>生成会话摘要</li>
+        <li>关闭连接</li>
+      </ul>
+
+      <h3>UserPromptSubmit</h3>
+      <p>在用户提交提示时触发。适用于：</p>
+      <ul>
+        <li>验证用户输入</li>
+        <li>增强用户请求</li>
+        <li>记录查询日志</li>
+        <li>过滤敏感内容</li>
+      </ul>
+
+      <h3>AgentSwitch</h3>
+      <p>在代理切换时触发。适用于：</p>
+      <ul>
+        <li>同步代理状态</li>
+        <li>记录切换历史</li>
+        <li>传递上下文</li>
+      </ul>
+
+      <h2>配置钩子</h2>
+      <p>在插件的 <code>hooks/</code> 目录创建 <code>hooks.json</code>：</p>
+
+      <pre><code class="language-json">{
+  "description": "我的自定义钩子配置",
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 hooks/validate-bash.py",
+            "timeout": 10
+          }
+        ]
+      }
+    ],
+    "PostToolUse": [
+      {
+        "matcher": "Write",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash hooks/format-check.sh"
+          }
+        ]
+      }
+    ],
+    "SessionStart": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash hooks/init-session.sh"
+          }
+        ]
+      }
+    ]
+  }
+}</code></pre>
+
+      <h2>钩子配置字段</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>字段</th>
+            <th>类型</th>
+            <th>描述</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><code>matcher</code></td>
+            <td>string</td>
+            <td>匹配的工具名称（可选，不匹配则适用于所有工具）</td>
+          </tr>
+          <tr>
+            <td><code>type</code></td>
+            <td>string</td>
+            <td>钩子类型：command、builtin</td>
+          </tr>
+          <tr>
+            <td><code>command</code></td>
+            <td>string</td>
+            <td>要执行的命令</td>
+          </tr>
+          <tr>
+            <td><code>timeout</code></td>
+            <td>number</td>
+            <td>超时时间（秒）</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h2>钩子脚本</h2>
+      <p>钩子脚本接收环境变量作为输入：</p>
+
+      <h3>可用环境变量</h3>
+      <table>
+        <thead>
+          <tr>
+            <th>变量</th>
+            <th>描述</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><code>CLAUDE_HOOK_TYPE</code></td>
+            <td>钩子类型名称</td>
+          </tr>
+          <tr>
+            <td><code>CLAUDE_TOOL_NAME</code></td>
+            <td>被调用的工具名称</td>
+          </tr>
+          <tr>
+            <td><code>CLAUDE_TOOL_INPUT</code></td>
+            <td>工具输入的 JSON 字符串</td>
+          </tr>
+          <tr>
+            <td><code>CLAUDE_PROJECT_DIR</code></td>
+            <td>项目目录路径</td>
+          </tr>
+          <tr>
+            <td><code>CLAUDE_PLUGIN_ROOT</code></td>
+            <td>插件根目录</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h2>钩子示例</h2>
+
+      <h3>PreToolUse: 限制危险命令</h3>
+      <pre><code class="language-python">#!/usr/bin/env python3
+import json
+import os
+import sys
+
+def validate_bash_command():
+    tool_input = os.environ.get('CLAUDE_TOOL_INPUT', '{}')
+    data = json.loads(tool_input)
+    command = data.get('command', '')
+
+    # 阻止危险命令
+    dangerous = ['rm -rf', 'format', 'mkfs']
+    if any(danger in command for danger in dangerous):
+        print(f"Error: Dangerous command blocked: {command}", file=sys.stderr)
+        sys.exit(1)
+
+    sys.exit(0)
+
+if __name__ == '__main__':
+    validate_bash_command()</code></pre>
+
+      <h3>PostToolUse: 自动格式化</h3>
+      <pre><code class="language-bash">#!/bin/bash
+# hooks/format-code.sh
+
+FILE_PATH=$(echo "$CLAUDE_TOOL_INPUT" | jq -r '.file_path')
+
+# 检查文件扩展名
+if [[ "$FILE_PATH" =~ \.(js|ts|jsx|tsx)$ ]]; then
+    # 运行 Prettier
+    npx prettier --write "$FILE_PATH"
+elif [[ "$FILE_PATH" =~ \.py$ ]]; then
+    # 运行 Black
+    black "$FILE_PATH"
+fi
+
+exit 0</code></pre>
+
+      <h3>SessionStart: 初始化环境</h3>
+      <pre><code class="language-bash">#!/bin/bash
+# hooks/init-session.sh
+
+echo "🚀 初始化开发环境..."
+
+# 检查依赖
+if [ -f "package.json" ]; then
+    echo "检查 Node.js 依赖..."
+    npm outdated || true
+fi
+
+# 检查 Git 状态
+if [ -d ".git" ]; then
+    BRANCH=$(git branch --show-current)
+    echo "当前分支: $BRANCH"
+fi
+
+# 显示项目信息
+echo "项目目录: $CLAUDE_PROJECT_DIR"
+
+exit 0</code></pre>
+
+      <h3>UserPromptSubmit: 输入验证</h3>
+      <pre><code class="language-python">#!/usr/bin/env python3
+import os
+import sys
+
+def validate_user_input():
+    prompt = os.environ.get('CLAUDE_USER_PROMPT', '')
+
+    # 检查敏感内容
+    sensitive_patterns = ['password', 'api_key', 'secret']
+    for pattern in sensitive_patterns:
+        if pattern in prompt.lower():
+            print(f"Warning: Sensitive keyword detected: {pattern}", file=sys.stderr)
+            # 可以选择阻止或只是警告
+            # sys.exit(1)
+
+    sys.exit(0)
+
+if __name__ == '__main__':
+    validate_user_input()</code></pre>
+
+      <h2>钩子输出</h2>
+      <p>钩子脚本通过以下方式影响执行流程：</p>
+
+      <h3>成功（退出码 0）</h3>
+      <p>允许操作继续执行。</p>
+
+      <h3>阻止（退出码非 0）</h3>
+      <p>对于 PreToolUse 钩子，会阻止工具执行并显示错误：</p>
+      <pre><code class="language-bash">#!/bin/bash
+# 阻止写入 node_modules 目录
+
+FILE_PATH=$(echo "$CLAUDE_TOOL_INPUT" | jq -r '.file_path')
+
+if [[ "$FILE_PATH" == *"/node_modules/"* ]]; then
+    echo "Error: Cannot modify files in node_modules" >&2
+    exit 1
+fi
+
+exit 0</code></pre>
+
+      <h3>修改工具输入</h3>
+      <p>钩子可以输出 JSON 来修改工具参数：</p>
+      <pre><code class="language-python">#!/usr/bin/env python3
+import json
+import os
+
+def modify_tool_input():
+    tool_input = os.environ.get('CLAUDE_TOOL_INPUT', '{}')
+    data = json.loads(tool_input)
+
+    # 修改输入
+    if 'max_tokens' not in data:
+        data['max_tokens'] = 4000
+
+    # 输出修改后的输入
+    print(json.dumps(data))
+
+if __name__ == '__main__':
+    modify_tool_input()</code></pre>
+
+      <h2>最佳实践</h2>
+
+      <ol>
+        <li><strong>快速执行</strong> - 钩子应尽快完成，设置合理的超时</li>
+        <li><strong>错误处理</strong> - 正确处理异常情况</li>
+        <li><strong>清晰日志</strong> - 使用 stderr 输出错误信息</li>
+        <li><strong>幂等性</strong> - 钩子可以安全地重复执行</li>
+        <li><strong>文档完善</strong> - 记录钩子的用途和配置方式</li>
+      </ol>
+
+      <h2>相关文档</h2>
+
+      <ul>
+        <li><a href="overview.html">插件概述</a></li>
+        <li><a href="plugin-structure.html">插件结构</a></li>
+        <li><a href="slash-commands.html">斜杠命令</a></li>
+        <li><a href="agents.html">代理开发</a></li>
+      </ul>
+
+      <div class="doc-nav-footer">
+        <a class="prev-link" href="skills.html">← 技能（Skills）</a>
+      </div>
+    </article>
+  </main>
+
+  <script src="../../assets/js/search.js"></script>
+</body>
+</html>

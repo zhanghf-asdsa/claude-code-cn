@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>斜杠命令 - Claude Code 中文文档</title>
+  <link rel="stylesheet" href="../../assets/css/style.css">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" rel="stylesheet">
+</head>
+<body>
+  <aside class="sidebar">
+    <div class="brand"><a href="../../index.html" style="text-decoration: none; color: inherit;">Claude Code 中文文档</a></div>
+    <input class="search-input" type="text" placeholder="搜索文档..." id="searchInput">
+    <nav class="doc-nav">
+      <details class="nav-section"><summary>快速开始</summary><ul><li><a href="../getting-started/installation.html">安装</a></li><li><a href="../getting-started/first-steps.html">第一步</a></li></ul></details>
+      <details class="nav-section"><summary>概念</summary><ul><li><a href="../concepts/overview.html">概述</a></li><li><a href="../concepts/session-management.html">会话管理</a></li></ul></details>
+      <details class="nav-section"><summary>命令</summary><ul><li><a href="../commands/built-in.html">内置命令</a></li><li><a href="../commands/slash-commands.html">斜杠命令</a></li></ul></details>
+      <details class="nav-section"><summary>技能</summary><ul><li><a href="../skills/creating-skills.html">创建技能</a></li><li><a href="../skills/skill-reference.html">技能参考</a></li></ul></details>
+      <details class="nav-section"><summary>MCP</summary><ul><li><a href="../mcp/what-is-mcp.html">什么是 MCP</a></li><li><a href="../mcp/using-mcp.html">使用 MCP</a></li></ul></details>
+      <details class="nav-section" open><summary>插件</summary><ul><li><a href="overview.html">概述</a></li><li><a href="plugin-structure.html">插件结构</a></li><li><a href="slash-commands.html" style="color: var(--color-link);">斜杠命令</a></li><li><a href="agents.html">代理（Agents）</a></li><li><a href="skills.html">技能（Skills）</a></li><li><a href="hooks.html">钩子（Hooks）</a></li></ul></details>
+    </nav>
+  </aside>
+
+  <main class="content">
+    <article class="doc-article">
+      <div class="breadcrumbs">首页 > 插件</div>
+      <h1>斜杠命令</h1>
+      <p>斜杠命令是一种快速执行常见任务的便捷方式。通过创建自定义斜杠命令，您可以将复杂的工作流程简化为单个命令。</p>
+
+      <h2>什么是斜杠命令？</h2>
+      <p>斜杠命令是以 <code>/</code> 开头的快捷命令，用于触发预定义的任务序列。它们特别适合：</p>
+      <ul>
+        <li>自动化重复性工作流程</li>
+        <li>标准化团队操作规范</li>
+        <li>简化复杂的多步骤任务</li>
+        <li>封装最佳实践</li>
+      </ul>
+
+      <h2>创建斜杠命令</h2>
+      <p>在插件的 <code>commands/</code> 目录中创建 <code>.md</code> 文件：</p>
+      <pre><code class="language-markdown">---
+description: 部署应用到生产环境
+allowed-tools: ["Bash", "Read", "Write"]
+---
+
+部署应用流程：
+
+1. **运行测试**：验证代码质量
+   !`npm test`
+
+2. **构建项目**：生成生产版本
+   !`npm run build`
+
+3. **部署到服务器**：推送到生产环境
+   !`rsync -avz dist/ user@server:/var/www/app`
+
+4. **验证部署**：检查服务状态
+   !`curl -I https://example.com`</code></pre>
+
+      <h2>命令前端元数据</h2>
+      <p>命令文件使用 YAML frontmatter 定义配置：</p>
+
+      <h3>description</h3>
+      <p>命令的描述信息，告诉用户这个命令做什么：</p>
+      <pre><code class="language-yaml">---
+description: 审查当前代码更改
+---</code></pre>
+
+      <h3>allowed-tools</h3>
+      <p>限制命令可以使用的工具（推荐用于安全性和性能）：</p>
+      <pre><code class="language-yaml">---
+# 只允许读取操作
+allowed-tools: ["Read", "Grep", "Glob"]
+
+# 允许写入和执行
+allowed-tools: ["Read", "Write", "Bash", "Edit"]
+
+# 允许所有工具（不推荐）
+allowed-tools: ["*"]
+---</code></pre>
+
+      <h2>命令语法</h2>
+
+      <h3>工具执行（!`）</h3>
+      <p>使用 <code>!`command`</code> 语法执行命令：</p>
+      <pre><code class="language-markdown">---
+description: 运行项目测试套件
+allowed-tools: ["Bash"]
+---
+
+执行以下测试：
+
+1. 单元测试
+   !`npm run test:unit`
+
+2. 集成测试
+   !`npm run test:integration`
+
+3. E2E 测试
+   !`npm run test:e2e`</code></pre>
+
+      <h3>条件执行</h3>
+      <p>使用条件语句控制执行流程：</p>
+      <pre><code class="language-markdown">---
+description: 智能代码格式化
+allowed-tools: ["Bash", "Read"]
+---
+
+如果项目使用 Prettier，运行：
+- 检查配置：!`test -f .prettierrc && echo "Prettier found"`
+- 格式化代码：!`npx prettier --write .`
+
+否则使用 ESLint：
+- 检查配置：!`test -f .eslintrc && echo "ESLint found"`
+- 格式化代码：!`npx eslint --fix .`</code></pre>
+
+      <h2>常用命令示例</h2>
+
+      <h3>代码审查命令</h3>
+      <pre><code class="language-markdown">---
+description: 执行完整的代码审查流程
+allowed-tools: ["Read", "Grep", "Glob"]
+---
+
+代码审查流程：
+
+1. 检查最近修改的文件
+   !`git diff --name-only HEAD~5`
+
+2. 分析代码质量
+   - 查找 TODO 注释
+   - 检查代码复杂度
+   - 验证测试覆盖
+
+3. 生成审查报告</code></pre>
+
+      <h3>部署命令</h3>
+      <pre><code class="language-markdown">---
+description: 部署到生产环境
+allowed-tools: ["Bash", "Read"]
+---
+
+生产部署检查清单：
+
+1. 验证环境
+   !`echo $NODE_ENV`
+
+2. 运行测试
+   !`npm test`
+
+3. 构建应用
+   !`npm run build`
+
+4. 部署
+   !`npm run deploy:prod`</code></pre>
+
+      <h3>文档生成命令</h3>
+      <pre><code class="language-markdown">---
+description: 生成 API 文档
+allowed-tools: ["Read", "Grep", "Write", "Bash"]
+---
+
+API 文档生成：
+
+1. 扫描 API 端点
+   - 查找路由定义
+   - 提取参数说明
+
+2. 生成文档
+   !`npm run docs:generate`
+
+3. 验证输出
+   !`ls -la docs/api/`</code></pre>
+
+      <h2>参数化命令</h2>
+      <p>命令可以接受用户输入：</p>
+      <pre><code class="language-markdown">---
+description: 创建新的功能分支
+allowed-tools: ["Bash"]
+---
+
+创建新功能分支：
+
+1. 更新主分支
+   !`git checkout main && git pull`
+
+2. 创建并切换到新分支
+   !`git checkout -b feature/{branch-name}`
+
+3. 推送到远程
+   !`git push -u origin feature/{branch-name}`
+
+将 {branch-name} 替换为您的功能名称。</code></pre>
+
+      <h2>命令组织</h2>
+      <p>使用命名空间组织相关命令：</p>
+      <pre><code class="language-text">commands/
+├── deploy/
+│   ├── staging.md      # /deploy staging
+│   └── production.md   # /deploy production
+├── test/
+│   ├── unit.md         # /test unit
+│   └── e2e.md          # /test e2e
+├── review.md           # /review
+└── docs.md             # /docs</code></pre>
+
+      <h2>最佳实践</h2>
+
+      <ol>
+        <li><strong>明确描述</strong> - 提供清晰的命令描述</li>
+        <li><strong>限制工具</strong> - 使用 <code>allowed-tools</code> 提高安全性</li>
+        <li><strong>错误处理</strong> - 考虑命令失败的场景</li>
+        <li><strong>文档完善</strong> - 在命令中添加注释说明</li>
+        <li><strong>测试验证</strong> - 确保命令按预期工作</li>
+      </ol>
+
+      <h2>相关文档</h2>
+
+      <ul>
+        <li><a href="overview.html">插件概述</a></li>
+        <li><a href="plugin-structure.html">插件结构</a></li>
+        <li><a href="agents.html">代理开发</a></li>
+        <li><a href="skills.html">技能开发</a></li>
+      </ul>
+
+      <div class="doc-nav-footer">
+        <a class="prev-link" href="plugin-structure.html">← 插件结构</a>
+        <a class="next-link" href="agents.html">代理（Agents）→</a>
+      </div>
+    </article>
+  </main>
+
+  <script src="../../assets/js/search.js"></script>
+</body>
+</html>

@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>代理（Agents）- Claude Code 中文文档</title>
+  <link rel="stylesheet" href="../../assets/css/style.css">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" rel="stylesheet">
+</head>
+<body>
+  <aside class="sidebar">
+    <div class="brand"><a href="../../index.html" style="text-decoration: none; color: inherit;">Claude Code 中文文档</a></div>
+    <input class="search-input" type="text" placeholder="搜索文档..." id="searchInput">
+    <nav class="doc-nav">
+      <details class="nav-section"><summary>快速开始</summary><ul><li><a href="../getting-started/installation.html">安装</a></li><li><a href="../getting-started/first-steps.html">第一步</a></li></ul></details>
+      <details class="nav-section"><summary>概念</summary><ul><li><a href="../concepts/overview.html">概述</a></li><li><a href="../concepts/session-management.html">会话管理</a></li></ul></details>
+      <details class="nav-section"><summary>命令</summary><ul><li><a href="../commands/built-in.html">内置命令</a></li><li><a href="../commands/slash-commands.html">斜杠命令</a></li></ul></details>
+      <details class="nav-section"><summary>技能</summary><ul><li><a href="../skills/creating-skills.html">创建技能</a></li><li><a href="../skills/skill-reference.html">技能参考</a></li></ul></details>
+      <details class="nav-section"><summary>MCP</summary><ul><li><a href="../mcp/what-is-mcp.html">什么是 MCP</a></li><li><a href="../mcp/using-mcp.html">使用 MCP</a></li></ul></details>
+      <details class="nav-section" open><summary>插件</summary><ul><li><a href="overview.html">概述</a></li><li><a href="plugin-structure.html">插件结构</a></li><li><a href="slash-commands.html">斜杠命令</a></li><li><a href="agents.html" style="color: var(--color-link);">代理（Agents）</a></li><li><a href="skills.html">技能（Skills）</a></li><li><a href="hooks.html">钩子（Hooks）</a></li></ul></details>
+    </nav>
+  </aside>
+
+  <main class="content">
+    <article class="doc-article">
+      <div class="breadcrumbs">首页 > 插件</div>
+      <h1>代理（Agents）</h1>
+      <p>代理（Agents）是具有特定专业知识和行为的自主 AI 实体，可以执行复杂任务而无需持续的用户指导。</p>
+
+      <h2>什么是代理？</h2>
+      <p>代理是专门的 AI 助手，具有：</p>
+      <ul>
+        <li><strong>特定角色</strong> - 如代码审查专家、文档编写者</li>
+        <li><strong>明确职责</strong> - 定义清晰的任务边界和成功标准</li>
+        <li><strong>工具权限</strong> - 限制只能访问完成任务所需的工具</li>
+        <li><strong>自主性</strong> - 可以独立完成复杂工作流程</li>
+      </ul>
+
+      <h2>创建代理</h2>
+      <p>在 <code>agents/</code> 目录创建 <code>.md</code> 文件：</p>
+      <pre><code class="language-markdown">---
+name: code-reviewer
+description: 用于代码审查，当用户写完代码请求审查或明确要求审查时使用
+color: blue
+tools: ["Read", "Grep", "Glob"]
+---
+
+你是一位代码审查专家，专注于识别代码问题。
+
+**核心职责：**
+1. 分析代码变更中的 bug 和逻辑错误
+2. 检查风格和约定遵守情况
+3. 建议改进可读性和可维护性的方法
+
+**分析流程：**
+1. 读取变更的文件
+2. 识别潜在问题
+3. 按严重程度分类（关键、重要、建议）
+4. 提供可操作的反馈
+
+**输出格式：**
+- **关键问题** - 必须在合并前修复
+- **重要问题** - 应该修复
+- **建议** - 最好修复
+- **优点** - 做得好的地方</code></pre>
+
+      <h2>代理配置字段</h2>
+      <table>
+        <thead><tr><th>字段</th><th>类型</th><th>描述</th></tr></thead>
+        <tbody>
+          <tr><td><code>name</code></td><td>string</td><td>代理标识符（小写字母、数字、连字符）</td></tr>
+          <tr><td><code>description</code></td><td>string</td><td>何时使用此代理，包含使用示例</td></tr>
+          <tr><td><code>model</code></td><td>string</td><td>使用的模型（默认：inherit）</td></tr>
+          <tr><td><code>color</code></td><td>string</td><td>代理在 UI 中的颜色标识</td></tr>
+          <tr><td><code>tools</code></td><td>array</td><td>允许访问的工具列表</td></tr>
+        </tbody>
+      </table>
+
+      <h2>代理类型</h2>
+      <h3>代码审查代理</h3>
+      <pre><code class="language-markdown">---
+name: code-reviewer
+description: 审查代码质量、安全性和最佳实践
+tools: ["Read", "Grep", "Glob"]
+---</code></pre>
+
+      <h3>文档生成代理</h3>
+      <pre><code class="language-markdown">---
+name: api-docs-writer
+description: 为 API 端点生成文档
+tools: ["Read", "Grep"]
+---</code></pre>
+
+      <h3>测试代理</h3>
+      <pre><code class="language-markdown">---
+name: test-engineer
+description: 编写和运行测试
+tools: ["Read", "Write", "Bash"]
+---</code></pre>
+
+      <h2>使用代理</h2>
+      <pre><code class="language-bash"># 明确调用代理
+> 请使用 code-reviewer 代理审查我的代码
+
+# 代理会自动激活的场景
+> 我刚实现了登录功能
+# Claude 会自动切换到代码审查代理</code></pre>
+
+      <div class="doc-nav-footer">
+        <a class="prev-link" href="slash-commands.html">← 斜杠命令</a>
+        <a class="next-link" href="skills.html">技能（Skills）→</a>
+      </div>
+    </article>
+  </main>
+
+  <script src="../../assets/js/search.js"></script>
+</body>
+</html>

@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>技能（Skills）- Claude Code 中文文档</title>
+  <link rel="stylesheet" href="../../assets/css/style.css">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" rel="stylesheet">
+</head>
+<body>
+  <aside class="sidebar">
+    <div class="brand"><a href="../../index.html" style="text-decoration: none; color: inherit;">Claude Code 中文文档</a></div>
+    <input class="search-input" type="text" placeholder="搜索文档..." id="searchInput">
+    <nav class="doc-nav">
+      <details class="nav-section"><summary>快速开始</summary><ul><li><a href="../getting-started/installation.html">安装</a></li><li><a href="../getting-started/first-steps.html">第一步</a></li></ul></details>
+      <details class="nav-section"><summary>概念</summary><ul><li><a href="../concepts/overview.html">概述</a></li><li><a href="../concepts/session-management.html">会话管理</a></li></ul></details>
+      <details class="nav-section"><summary>命令</summary><ul><li><a href="../commands/built-in.html">内置命令</a></li><li><a href="../commands/slash-commands.html">斜杠命令</a></li></ul></details>
+      <details class="nav-section"><summary>技能</summary><ul><li><a href="../skills/creating-skills.html">创建技能</a></li><li><a href="../skills/skill-reference.html">技能参考</a></li></ul></details>
+      <details class="nav-section"><summary>MCP</summary><ul><li><a href="../mcp/what-is-mcp.html">什么是 MCP</a></li><li><a href="../mcp/using-mcp.html">使用 MCP</a></li></ul></details>
+      <details class="nav-section" open><summary>插件</summary><ul><li><a href="overview.html">概述</a></li><li><a href="plugin-structure.html">插件结构</a></li><li><a href="slash-commands.html">斜杠命令</a></li><li><a href="agents.html">代理（Agents）</a></li><li><a href="skills.html" style="color: var(--color-link);">技能（Skills）</a></li><li><a href="hooks.html">钩子（Hooks）</a></li></ul></details>
+    </nav>
+  </aside>
+
+  <main class="content">
+    <article class="doc-article">
+      <div class="breadcrumbs">首页 > 插件</div>
+      <h1>技能（Skills）</h1>
+      <p>技能（Skills）是插件系统中用于添加特定领域知识和能力的组件。与命令和代理不同，技能会根据对话上下文自动激活。</p>
+
+      <h2>什么是技能？</h2>
+      <p>技能是一种上下文感知的扩展方式，具有以下特点：</p>
+      <ul>
+        <li><strong>自动激活</strong> - 根据对话内容智能启用</li>
+        <li><strong>领域专业</strong> - 提供特定领域的专业知识</li>
+        <li><strong>上下文保留</strong> - 可访问完整的对话历史</li>
+        <li><strong>组合使用</strong> - 多个技能可以同时激活</li>
+      </ul>
+
+      <h2>技能与代理的区别</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>特性</th>
+            <th>技能（Skills）</th>
+            <th>代理（Agents）</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>激活方式</td>
+            <td>自动（上下文触发）</td>
+            <td>手动（用户指定）</td>
+          </tr>
+          <tr>
+            <td>上下文访问</td>
+            <td>完整对话历史</td>
+            <td>无（独立上下文）</td>
+          </tr>
+          <tr>
+            <td>工具权限</td>
+            <td>所有可用工具</td>
+            <td>受限工具集</td>
+          </tr>
+          <tr>
+            <td>适用场景</td>
+            <td>领域知识增强</td>
+            <td>任务执行</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h2>创建技能</h2>
+      <p>在插件的 <code>skills/</code> 目录中为每个技能创建子目录：</p>
+
+      <h3>目录结构</h3>
+      <pre><code class="language-text">skills/
+├── code-review/
+│   └── SKILL.md
+├── react-dev/
+│   ├── SKILL.md
+│   ├── references/
+│   │   ├── hooks.md
+│   │   └── patterns.md
+│   └── examples/
+│       └── component.md
+└── api-design/
+    ├── SKILL.md
+    └── best-practices.md</code></pre>
+
+      <h3>SKILL.md 格式</h3>
+      <p>每个技能必须有 <code>SKILL.md</code> 文件：</p>
+      <pre><code class="language-markdown">---
+name: code-review
+description: 代码审查和最佳实践指导
+version: 1.0.0
+---
+
+你是一位代码审查专家，专注于识别代码问题并提供改进建议。
+
+## 核心原则
+
+1. **安全性优先** - 检查常见安全漏洞
+2. **性能意识** - 识别性能瓶颈
+3. **可维护性** - 确保代码清晰易懂
+
+## 审查流程
+
+当用户请求代码审查时：
+
+1. 读取变更的文件
+2. 按严重程度分类问题
+3. 提供具体的修复建议
+4. 指出做得好的地方
+
+## 问题分类
+
+- **关键**：安全漏洞、数据丢失风险
+- **重要**：性能问题、逻辑错误
+- **建议**：代码风格、命名约定
+
+## 输出格式
+
+使用结构化格式：
+```markdown
+## 🔴 关键问题
+[问题描述]
+
+## 🟡 重要问题
+[问题描述]
+
+## 💡 建议
+[改进建议]
+
+## ✅ 优点
+[做得好的地方]
+```</code></pre>
+
+      <h2>技能元数据</h2>
+
+      <h3>name</h3>
+      <p>技能的唯一标识符：</p>
+      <pre><code class="language-yaml">---
+name: react-expert
+---</code></pre>
+
+      <h3>description</h3>
+      <p>技能的用途说明：</p>
+      <pre><code class="language-yaml">---
+description: React 开发专家，提供组件设计、状态管理和性能优化建议
+---</code></pre>
+
+      <h3>version</h3>
+      <p>技能版本号：</p>
+      <pre><code class="language-yaml">---
+version: 2.1.0
+---</code></pre>
+
+      <h2>技能类型</h2>
+
+      <h3>领域专家技能</h3>
+      <pre><code class="language-markdown">---
+name: typescript-pro
+description: TypeScript 高级用法和类型系统专家
+---
+
+专注于 TypeScript 的高级特性：
+- 泛型约束
+- 条件类型
+- 类型推断
+- 装饰器使用
+- 类型体操技巧</code></pre>
+
+      <h3>工作流技能</h3>
+      <pre><code class="language-markdown">---
+name: tdd-workflow
+description: 测试驱动开发工作流指导
+---
+
+TDD 开发流程：
+
+1. **红** - 编写失败的测试
+2. **绿** - 编写最小代码通过测试
+3. **重构** - 改进代码质量
+4. **重复** - 继续下一个功能</code></pre>
+
+      <h3>标准检查技能</h3>
+      <pre><code class="language-markdown">---
+name: accessibility-audit
+description: 无障碍访问性检查和改进
+---
+
+WCAG 2.1 AA 标准检查：
+
+- 键盘导航
+- 屏幕阅读器支持
+- 颜色对比度
+- ARIA 属性使用
+- 焦点管理</code></pre>
+
+      <h2>引用和示例</h2>
+      <p>技能目录可以包含额外的参考资料：</p>
+
+      <h3>references/</h3>
+      <p>存储参考文档和最佳实践：</p>
+      <pre><code class="language-text">skills/react-pro/
+├── SKILL.md
+└── references/
+    ├── hooks-patterns.md      # Hooks 使用模式
+    ├── performance-tips.md     # 性能优化技巧
+    └── common-pitfalls.md      # 常见陷阱</code></pre>
+
+      <h3>examples/</h3>
+      <p>存储代码示例和用例：</p>
+      <pre><code class="language-text">skills/react-pro/
+├── SKILL.md
+└── examples/
+    ├── custom-hook.md         # 自定义 Hook 示例
+    ├── hoc-pattern.md         # HOC 模式示例
+    └── compound-components.md # 组合组件示例</code></pre>
+
+      <h2>技能激活</h2>
+      <p>技能根据以下条件自动激活：</p>
+
+      <ul>
+        <li><strong>关键词匹配</strong> - 用户请求中的术语</li>
+        <li><strong>文件上下文</strong> - 正在操作的文件类型</li>
+        <li><strong>项目特征</strong> - 项目配置和依赖</li>
+        <li><strong>对话历史</strong> - 之前的交互内容</li>
+      </ul>
+
+      <h2>最佳实践</h2>
+
+      <ol>
+        <li><strong>明确范围</strong> - 每个技能专注于一个领域</li>
+        <li><strong>详细指导</strong> - 提供清晰的步骤和说明</li>
+        <li><strong>示例丰富</strong> - 包含实际代码示例</li>
+        <li><strong>保持更新</strong> - 随技术演进更新技能</li>
+        <li><strong>测试验证</strong> - 确保技能按预期工作</li>
+      </ol>
+
+      <h2>相关文档</h2>
+
+      <ul>
+        <li><a href="../skills/creating-skills.html">创建技能指南</a></li>
+        <li><a href="overview.html">插件概述</a></li>
+        <li><a href="agents.html">代理开发</a></li>
+        <li><a href="hooks.html">钩子系统</a></li>
+      </ul>
+
+      <div class="doc-nav-footer">
+        <a class="prev-link" href="agents.html">← 代理（Agents）</a>
+        <a class="next-link" href="hooks.html">钩子（Hooks）→</a>
+      </div>
+    </article>
+  </main>
+
+  <script src="../../assets/js/search.js"></script>
+</body>
+</html>
